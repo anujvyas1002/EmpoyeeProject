@@ -65,7 +65,7 @@ const EmployeeTable = () => {
   </thead>
   <tbody>
       {
-        employees.map((employee,index)=>
+        employees.map((employee)=>
         (
           <tr key={employee.id}>
           <td>{employee.firstname}</td>
@@ -73,7 +73,12 @@ const EmployeeTable = () => {
           <td>{employee.dob}</td>
           <td>{employee.gender}</td>
           <td>{employee.role.role}</td>
-          <td>{employee.skills[0].skill}</td>
+          {
+        employee.skills.map((skill,index)=>
+        (
+          <td key={index}>{skill.skill}</td>
+        ))}
+          
           <td>{employee.employee_about}</td>
           <td>
             <UpdateEmployee  employee={employee}  FatchAllRecord={FatchAllRecord} />

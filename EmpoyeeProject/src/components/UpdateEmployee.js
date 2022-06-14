@@ -10,6 +10,9 @@ const UpdateEmployee = (props) => {
     mode:"onTouched",
   });
   const [show, setShow] = useState(false);
+  const [skills, setSkills] = React.useState([]);
+  const [roles, setRoles] = React.useState([]);
+
   const AddSkill=[];
   let req:any;
   // console.log(errors)
@@ -44,11 +47,13 @@ const UpdateEmployee = (props) => {
     setValue("employee_about",props.employee.employee_about)
     setValue("skill",props.employee.skills[0].skill)
     setShow(true);
+    skillsData();
+    rolesData();
   } 
 
   
   function skillCheck(e){
-    console.log(e.target.value);
+    console.log(e.target.id);
 
     if (e.target.name === 'Java') {
       AddSkill.push({skill:'Java'});
@@ -131,20 +136,19 @@ const UpdateEmployee = (props) => {
       });
   }
 
-  const Roles = [
-    {  role: "Developer" },
-    {  role: "Tester" },
-    {  role: "Manager" },
-    {  role: "Team Leader" },
-  ];
+  function skillsData() {
+    axios.get(`http://localhost:3000/skills`).then((response) => {
+      setSkills(response.data)
+      console.log(response.data)
+    });
+  }
 
-  const Skills = [
-    { id: 1, skill: "Java" },
-    { id: 2, skill: "NodeJs" },
-    { id: 3, skill: "React" },
-    { id: 4, skill: "Angular" },
-    { id: 5, skill: "Android" },
-  ];
+  function rolesData() {
+    axios.get(`http://localhost:3000/roles`).then((response) => {
+      setRoles(response.data)
+      console.log(response.data)
+    });
+  }
 
   
 
@@ -287,8 +291,8 @@ const UpdateEmployee = (props) => {
                 <NativeSelect className="form-control" id="role" {...register("role", { required:"Role is Required" })}
            >
                   <option  value="">--- Select Your Roles ---</option>
-                  {Roles.map((item,index) => (
-                    <option  key={index}>{item.role}</option>
+                  {roles.map((role) => (
+                    <option  key={role.id}>{role.role}</option>
                   ))}
                 </NativeSelect>
                 {
@@ -325,12 +329,12 @@ const UpdateEmployee = (props) => {
               
               <label htmlFor="skill">Skills</label>
               <div className="form-control"   >
-              {Skills.map((employee) => (
+              {skills.map((skill) => (
                     //  <input type="Checkbox" {...register("skill")} value={item.skill} name={item.skill} onChange={e => skillCheck(e)} key={index} label={item.skill} />
-                    <div className="form-check" key={employee.id}>
-                    <input type="Checkbox" {...register("skill")} id={employee.skill} name={employee.skill} onChange={e => skillCheck(e)} />
-                    <label className="form-check-label" htmlFor={employee.skill}>
-                    {employee.skill}
+                    <div className="form-check" key={skill.id}>
+                    <input type="Checkbox" {...register("skill")} id={skills.id} name={skill.skill} onChange={e => skillCheck(e)} />
+                    <label className="form-check-label" htmlFor={skill.id}>
+                    {skill.skill}
                     </label>
                   </div>
                   ))} 

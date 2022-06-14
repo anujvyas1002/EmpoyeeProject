@@ -1,14 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import EmployeeTable from "./components/EmployeeTable";
-
+// import EmployeeTable from "./components/EmployeeTable";
+import CheckTable from "./components/CheckTable";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <EmployeeTable/>
+    {/* <EmployeeTable/> */}
+    <CheckTable/>
   </React.StrictMode>
 );
 

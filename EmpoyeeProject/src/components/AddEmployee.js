@@ -9,12 +9,20 @@ const AddEmployee = (props) => {
   const { register,resetField, handleSubmit, formState: { errors } } = useForm({
     mode:"onTouched"
   });
+
+  // useState
+   
+
   const [show, setShow] = useState(false);
+  const [skills, setSkills] = React.useState([]);
+  const [roles, setRoles] = React.useState([]);
+
   const AddSkill=[];
   let req:any;
   // console.log(errors)
   const onSubmit = data => {
     console.log(data);
+    
     console.log(AddSkill);
     req = {
       id: Date.now(),
@@ -69,87 +77,43 @@ const AddEmployee = (props) => {
         else{
           console.log("other error");
         }
-
-        
-
       });
   }
 
-
-  
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-  const Roles = [
-    {  role: "Developer" },
-    {  role: "Tester" },
-    {  role: "Manager" },
-    {  role: "Team Leader" },
-  ];
-  
-
-  function skillCheck(e){
-    console.log(e.target.value);
-
-    if (e.target.name === 'Java') {
-      AddSkill.push({skill:'Java'});
-    }
-    else{
-      for(let i = 0; i < AddSkill.length; i++){
-        if(AddSkill[i] === AddSkill[i].skill && e.target.name === 'Java'){
-          AddSkill.splice(i, 1);
-        }
-      }
-    }
-    if (e.target.name === 'NodeJs' ) {
-      AddSkill.push({skill:'NodeJs'});
-    }
-    else{
-      for(let i = 0; i < AddSkill.length; i++){
-        if(AddSkill[i] === AddSkill[i].skill ){
-          AddSkill.splice(i, 1);
-        }
-      }
-    }
-    if (e.target.name === 'React' ) {
-      AddSkill.push({skill:'React'});
-    }
-    else{
-      for(let i = 0; i < AddSkill.length; i++){
-        if(AddSkill[i] === AddSkill[i].React ){
-          AddSkill.splice(i, 1);
-        }
-      }
-    }
-    if (e.target.name === 'Angular' ) {
-      AddSkill.push({skill:'Angular'});
-    }
-    else{
-      for(let i = 0; i < AddSkill.length; i++){
-        if(AddSkill[i] === AddSkill[i].skill ){
-          AddSkill.splice(i, 1);
-        }
-      }
-    }
-    if (e.target.name === 'Android' ) {
-      AddSkill.push({skill:'Angular'});
-    }
-    else{
-      for(let i = 0; i < AddSkill.length; i++){
-        if(AddSkill[i] === AddSkill[i].skill ){
-          AddSkill.splice(i, 1);
-        }
-      }
-    }
-
+  function skillsData() {
+    axios.get(`http://localhost:3000/skills`).then((response) => {
+      setSkills(response.data)
+      console.log(response.data)
+    });
   }
 
-  const Skills = [
-    { id: 1, skill: "Java" },
-    { id: 2, skill: "NodeJs" },
-    { id: 3, skill: "React" },
-    { id: 4, skill: "Angular" },
-    { id: 5, skill: "Android" },
-  ];
+  function rolesData() {
+    axios.get(`http://localhost:3000/roles`).then((response) => {
+      setRoles(response.data)
+      console.log(response.data)
+    });
+  }
+  
+  const handleClose = () => setShow(false);
+  const handleShow = () =>{
+    setShow(true);
+    skillsData();
+    rolesData();
+  } 
+
+
+  function skillCheck(e,skill){
+    console.log(e.target.id);
+    console.log(e.target.name);
+    console.log(skill);
+    // console.log(skill.length)
+
+   
+    AddSkill.push({skills:skill});
+     
+    }
+
+  
 
   
 
@@ -296,8 +260,8 @@ const AddEmployee = (props) => {
                 <NativeSelect className="form-control" id="role" {...register("role", { required:"Role is Required" })}
            >
                   <option  value="">--- Select Your Roles ---</option>
-                  {Roles.map((item,index) => (
-                    <option  key={index}>{item.role}</option>
+                  {roles.map((role) => (
+                    <option  key={role.id}>{role.role}</option>
                   ))}
                 </NativeSelect>
                 {
@@ -332,14 +296,14 @@ const AddEmployee = (props) => {
                }
               </div>
               
-              <label htmlFor="skill">Skills</label>
+              <label htmlFor="skills">Skills</label>
               <div className="form-control"   >
-              {Skills.map((employee) => (
+              {skills.map((skill) => (
                     //  <input type="Checkbox" {...register("skill")} value={item.skill} name={item.skill} onChange={e => skillCheck(e)} key={index} label={item.skill} />
-                    <div className="form-check" key={employee.id}>
-                    <input type="Checkbox" {...register("skill")} id={employee.skill} name={employee.skill} onChange={e => skillCheck(e)} />
-                    <label className="form-check-label" htmlFor={employee.skill}  >
-                    {employee.skill}
+                    <div className="form-check" key={skill.id}>
+                    <input type="Checkbox" {...register("skills")} id={skill.id} name="empoyeeSkill" value={skill} onChange={e => skillCheck(e,skill)} />
+                    <label className="form-check-label" htmlFor={skill.id}  >
+                    {skill.skill}
                     </label>
                   </div>
                   ))} 
