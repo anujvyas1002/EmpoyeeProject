@@ -1,10 +1,11 @@
 
 
-import React from 'react'
+import React,{useState} from 'react'
 import axios from "axios";
 import AddEmployee from "./AddEmployee";
 import UpdateEmployee from "./UpdateEmployee";
 import RemoveEmployee from "./RemoveEmployee";
+import SearchEmployee from "./SearchEmployee";
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -17,13 +18,17 @@ import TablePagination from '@mui/material/TablePagination';
 
 
 
+
 const EmployeeTable = () => {
 
-  const [employees, setEmployees] = React.useState([]);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [employees, setEmployees] = useState([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [searchApiData,setSearchApiData]=useState([]);
+  const [filterVal, setFilterVal]=useState();
 
- 
+  
+
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -34,6 +39,7 @@ const EmployeeTable = () => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+
 
 
   
@@ -70,61 +76,77 @@ const EmployeeTable = () => {
     axios.get(`http://localhost:3000/employees`).then((response) => {
       setEmployees(response.data);
       console.log(response.data)
-     
-      
+      setSearchApiData(response.data)
       console.log("anuj"+response.data[0].skills[0].skill)
     });
   }
 
+  const handleFilter = (e) =>{
+    if(e.target.value===''){
+      setEmployees(searchApiData);
+    }
+    else{
+      const filterResult = searchApiData.filter(item=>item.firstname.toLowerCase().includes(e.target.value.toLowerCase()))
+      setEmployees(filterResult);
+    }
+    setFilterVal(e.target.value);
+  }
 
 
   return (
     <div>
+     
       <div className="container">
+        <input placeholder="Search" value={filterVal} onChange={(e)=>handleFilter(e)}/>
+      <SearchEmployee/>
   <AddEmployee FatchAllRecord={FatchAllRecord}/>
-  <hr></hr>
+    <hr></hr>
   <Paper sx={{ width: '100%', mb: 2 }}>
     
   <TableContainer>
   <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
-          <TableRow>
-            <TableCell align="right">Firstname</TableCell>
-            <TableCell align="right">LastName</TableCell>
-            <TableCell align="right">DOB</TableCell>
-            <TableCell align="right">Gender</TableCell>
-            <TableCell align="right">Role</TableCell>
-            <TableCell align="right">Skill</TableCell>
-            <TableCell align="right">Employee About</TableCell>
-            <TableCell align="right">Actions</TableCell>
+          <TableRow >
+            
+            <TableCell >First Name</TableCell>
+            <TableCell >Last Name</TableCell>
+            <TableCell >DOB</TableCell>
+            <TableCell >Gender</TableCell>
+            <TableCell >Role</TableCell>
+            <TableCell >Skill</TableCell>
+            <TableCell > About</TableCell>
+            <TableCell >Actions</TableCell>
             </TableRow>
             </TableHead>
             <TableBody>
             {
               employees
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((employee)=>
+              .map((employee,index)=>
         (
             <TableRow
               key={employee.id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-              <TableCell >
-              {employee.firstname}
-              </TableCell>
-              <TableCell align="right">{employee.lastName}</TableCell>
-              <TableCell align="right">{employee.dob}</TableCell>
-              <TableCell align="right">{employee.gender}</TableCell>
-              <TableCell align="right">{employee.role.role}</TableCell>
-                    {
-                employee.skills.map((skill,index)=>
-                (
+              <TableCell  >{employee.firstname}</TableCell>
+              <TableCell >{employee.lastName}</TableCell>
+              <TableCell >{employee.dob}</TableCell>
+              <TableCell >{employee.gender}</TableCell>
+              <TableCell >{employee.role.role}</TableCell>
+                
                
-                <TableCell  key={index}>{skill.skill}</TableCell>
-
+                <TableCell >
+{
+employee.skills.map((skill,index)=>
+                (
+                  <div key={index}>{skill.skill}</div>
+                  
                 ))}
-                <TableCell align="right">{employee.employee_about}</TableCell>
-                <TableCell align="right">
+                  </TableCell>
+
+              
+                <TableCell >{employee.employee_about}</TableCell>
+                <TableCell >
                 <UpdateEmployee  employee={employee}  FatchAllRecord={FatchAllRecord} />
                 <RemoveEmployee employeeID={employee.id} FatchAllRecord={FatchAllRecord}/>
      

@@ -15,16 +15,17 @@ const AddEmployee = (props) => {
   const [show, setShow] = useState(false);
   const [skills, setSkills] =useState([]);
   const [roles, setRoles] = useState([]);
+  // const [selectedSkills,setSelectedSkills]= useState([]);
 
 
 
-  const AddSkill=[];
+  // const AddSkill=[];
   let req:any;
   // console.log(errors)
   const onSubmit = data => {
     console.log(data);
     
-    console.log(AddSkill);
+    // console.log(AddSkill);
     req = {
       id: Date.now(),
       firstname: data.firstname,
@@ -33,7 +34,7 @@ const AddEmployee = (props) => {
       employee_about: data.employee,
       gender: data.gender,
       role: {role:data.role},
-      skills: AddSkill,
+      skills: skills,
     }
     handleClose();
     createPost(req);
@@ -101,18 +102,34 @@ const AddEmployee = (props) => {
     skillsData();
     rolesData();
   } 
-
-
+  
   function skillCheck(e,skill){
-
-
-    console.log(e.target.id);
-    console.log(e.target.name);
-    console.log(skill);
-    // console.log(skill.length)
-
+    console.log(skill)
+    console.log(skills)
+    
+    var index = skills.findIndex(o => o.id=== skill.id);
+    console.log("index" +index);
+    if (index === -1) 
+    { 
+     skills.push(skill);
+    }
+    else
+    {
+      
+      skills.splice(index, 1);
+    }
+     
+    // let newSkills = [...skills];
+    // console.log(e.target.id);
+    // console.log(e.target.name);
+    // for(let i=0;i<newSkills.length;i++){
+    //   if(skill.id===newSkills[i].id){
+    //     skills.splice(i, 1);
+    //      } 
+    // }
+    // setSkills(skills)
    
-    AddSkill.push({skills:skill});
+    // AddSkill.push({skills:skills});
      
     }
 
