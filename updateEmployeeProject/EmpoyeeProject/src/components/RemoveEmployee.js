@@ -22,7 +22,7 @@ const RemoveEmployee = (props) => {
         
         if(response.status===200){
           console.log("200 success");
-          props.FatchAllRecord();
+          props.fetchAllRecord();
         }
         else if(response.status===201){
           console.log("201 Created");

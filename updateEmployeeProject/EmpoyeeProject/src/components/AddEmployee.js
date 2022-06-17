@@ -15,7 +15,7 @@ const AddEmployee = (props) => {
   const [show, setShow] = useState(false);
   const [skills, setSkills] =useState([]);
   const [roles, setRoles] = useState([]);
-  // const [selectedSkills,setSelectedSkills]= useState([]);
+  const [selectedSkills,setSelectedSkills]= useState([]);
 
 
 
@@ -31,18 +31,15 @@ const AddEmployee = (props) => {
       firstname: data.firstname,
       lastName: data.lastName,
       dob: data.dob,
-      employee_about: data.employee,
+      employee_about: data.employee_about,
       gender: data.gender,
       role: {role:data.role},
-      skills: skills,
+      skills: selectedSkills,
     }
     handleClose();
     createPost(req);
   }
 
-
-
-  
 
   function createPost(req) {
     axios
@@ -50,7 +47,7 @@ const AddEmployee = (props) => {
       .then((response) => {
         
         console.log(response.status)
-        props.FatchAllRecord();
+        props.fetchAllRecord();
 
         resetField("id")
         resetField("firstname")
@@ -106,36 +103,23 @@ const AddEmployee = (props) => {
   function skillCheck(e,skill){
     console.log(skill)
     console.log(skills)
+    let newSkills = [...selectedSkills];
     
-    var index = skills.findIndex(o => o.id=== skill.id);
+    var index = selectedSkills.findIndex(o => o.id=== skill.id);
     console.log("index" +index);
     if (index === -1) 
     { 
-     skills.push(skill);
+      newSkills.push(skill);
     }
     else
     {
       
-      skills.splice(index, 1);
-    }
-     
-    // let newSkills = [...skills];
-    // console.log(e.target.id);
-    // console.log(e.target.name);
-    // for(let i=0;i<newSkills.length;i++){
-    //   if(skill.id===newSkills[i].id){
-    //     skills.splice(i, 1);
-    //      } 
-    // }
-    // setSkills(skills)
-   
-    // AddSkill.push({skills:skills});
-     
+      newSkills.splice(index, 1);
     }
 
-  
-
-  
+    console.log(newSkills);
+    setSelectedSkills(newSkills); 
+    }
 
   return (
     <div>
@@ -216,11 +200,11 @@ const AddEmployee = (props) => {
                       className="form-check-input"
                       type="radio"
                       id="male"
-                      value="male"
+                      value="Male"
                       {...register("gender", { required: "Gender is Required" })}
                     />
                     <label className="form-check-label" htmlFor="male">
-                      male
+                      Male
                     </label>
                   </div>
                   <div className="form-check form-check-inline">
@@ -228,12 +212,12 @@ const AddEmployee = (props) => {
                       className="form-check-input"
                       type="radio"
                       id="female"
-                      value="female"
+                      value="Female"
                       name="gender"
                       {...register("gender", { required: "Gender is Required" })}
                     />
                     <label className="form-check-label" htmlFor="female">
-                      female
+                      Female
                     </label>
                   </div>
                   <div className="form-check form-check-inline">
@@ -241,12 +225,12 @@ const AddEmployee = (props) => {
                       className="form-check-input"
                       type="radio"
                       id="other"
-                      value="other"
+                      value="Other"
                       {...register("gender", { required: "Gender is Required" })}
            
                     />
                     <label className="form-check-label" htmlFor="other">
-                      other
+                      Other
                     </label>
                   </div>
                 
@@ -292,26 +276,26 @@ const AddEmployee = (props) => {
               </div>
 
                 <div className="form-group">
-                <label htmlFor="employee">Employee About</label>
+                <label htmlFor="employee_about">Employee About</label>
                 <textarea
                   type="text"
                   className="form-control"
-                  id="employee"
+                  id="employee_about"
                   placeholder="Enter Your employee"
-                  {...register( "employee",{ required: "Employee About is Required",
+                  {...register( "employee_about",{ required: "Employee About is Required",
                   minLength:{
                     value:3,
                     message:"Enter your Minimum 3 characters"
                   },
                   maxLength:{
-                    value:20,
+                    value:300,
                     message:"Enter your Maximum 300 characters"
                   },
                  })}        
                     />
                  {
-                 errors.employee && (
-                   <div className="text-danger"> {errors.employee.message}</div>
+                 errors.employee_about && (
+                   <div className="text-danger"> {errors.employee_about.message}</div>
                  )
                }
               </div>
@@ -319,14 +303,21 @@ const AddEmployee = (props) => {
               <label htmlFor="skills">Skills</label>
               <div className="form-control"   >
               {skills.map((skill) => (
-                    //  <input type="Checkbox" {...register("skill")} value={item.skill} name={item.skill} onChange={e => skillCheck(e)} key={index} label={item.skill} />
                     <div className="form-check" key={skill.id}>
-                    <input type="Checkbox" {...register("skills")} id={skill.id} name="empoyeeSkill" value={skill} onChange={e => skillCheck(e,skill)} />
+                    <input type="Checkbox" {...register("skills" ,{ required:true })} id={skill.id} name="skills" value={skill} onChange={e => skillCheck(e,skill)} />
                     <label className="form-check-label" htmlFor={skill.id}  >
                     {skill.skill}
                     </label>
                   </div>
                   ))} 
+                  
+   
+                  {
+                 ( selectedSkills.length<1 && errors.skills?.type ==="required") &&   (
+                   <div className="text-danger"> Enter your Minimum 1 Skills</div>
+                 )
+               }
+               
               </div>
               
               <hr></hr>

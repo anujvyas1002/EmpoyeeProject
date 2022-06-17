@@ -114,8 +114,8 @@ const UpdateEmployee = (props) => {
       .put(`http://localhost:3000/employees/${props.employee.id}`, req)
       .then((response) => {
           if(response.status===200){
-          console.log("200 success");
-          props.FatchAllRecord();
+          console.log("200 success"); 
+          props.fetchAllRecord();
         }
         else if(response.status===201){
           console.log("201 Created");
