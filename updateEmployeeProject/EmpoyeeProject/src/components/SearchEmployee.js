@@ -13,12 +13,13 @@ function SearchEmployee() {
   }, [query]);
 
   return (
-    <div className="container">
+    <div >
       <input
-        className="search float-end  mt-2"
+        
         placeholder="Search..."
         onChange={(e) => setQuery(e.target.value)}
       />
+      
     </div>
   );
 }

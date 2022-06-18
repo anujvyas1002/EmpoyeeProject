@@ -13,6 +13,10 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import TablePagination from "@mui/material/TablePagination";
 import IconButton from "@mui/material/IconButton";
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+
+import { Button, Input } from "@mui/material";
+
 
 const EmployeeTable = () => {
   const [employees, setEmployees] = useState([]);
@@ -94,18 +98,31 @@ const EmployeeTable = () => {
 
   return (
     <div>
-      <div className="container">
-        <div>
-          <input
+      
+      <div>
+        <div className="float-end mt-3">
+          <Input
             placeholder="Search"
             value={filterVal || ""}
             onChange={(e) => handleFilter(e)}
           />
+          <Button><SearchOutlinedIcon/></Button>
         </div>
-        <SearchEmployee />
-        <AddEmployee fetchAllRecord={fetchAllRecord} />
-        <hr></hr>
-        <Paper sx={{ width: "100%", mb: 2 }}>
+        
+       
+       <SearchEmployee/>
+        
+        <div>
+          <div><AddEmployee fetchAllRecord={fetchAllRecord} /></div>
+       
+        </div>
+       
+       
+        
+
+        
+         <hr></hr>
+        <Paper sx={{ width: "100%", mb: 0 }}>
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} className='table table-striped table-hover'  size="small" aria-label="simple table">
               <TableHead>

@@ -114,7 +114,7 @@ const AddEmployee = (props) => {
 
   return (
     <div>
-      <div className="container">
+      
         <Button
           className="mt-2"
           variant="contained"
@@ -350,7 +350,7 @@ const AddEmployee = (props) => {
           </Modal.Body>
         </Modal>
       </div>
-    </div>
+    
   );
 };
 
