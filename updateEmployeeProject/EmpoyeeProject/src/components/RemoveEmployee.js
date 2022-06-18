@@ -1,8 +1,13 @@
-import React from 'react'
-import DeleteIcon from '@mui/icons-material/Delete';
+import React from "react";
+import DeleteIcon from "@mui/icons-material/Delete";
 import axios from "axios";
-import {Dialog,DialogActions,DialogContent,DialogContentText,Button} from '@mui/material';
-
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  Button
+} from "@mui/material";
 
 const RemoveEmployee = (props) => {
   const [open, setOpen] = React.useState(false);
@@ -14,37 +19,30 @@ const RemoveEmployee = (props) => {
   const handleClose = () => {
     setOpen(false);
   };
-  
+
   function DeleteEmployee() {
     axios
       .delete(`http://localhost:3000/employees/${props.employeeID}`)
       .then((response) => {
-        
-        if(response.status===200){
+        if (response.status === 200) {
           console.log("200 success");
           props.fetchAllRecord();
-        }
-        else if(response.status===201){
+        } else if (response.status === 201) {
           console.log("201 Created");
-        }
-        else if(response.status===400){
-          console.log("400 Bad Request"); 
-        }
-        else if(response.status===404){
-          console.log("404 Not Found"); 
-        }
-        else if(response.status===500){
+        } else if (response.status === 400) {
+          console.log("400 Bad Request");
+        } else if (response.status === 404) {
+          console.log("404 Not Found");
+        } else if (response.status === 500) {
           console.log("500 Internal Server Error");
-        }
-        else{
+        } else {
           console.log("other error");
         }
-       
       });
   }
   return (
     <div>
-      <DeleteIcon  onClick={handleClickOpen}/>
+      <DeleteIcon onClick={handleClickOpen} />
 
       <Dialog
         open={open}
@@ -54,7 +52,7 @@ const RemoveEmployee = (props) => {
       >
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-          Empoyee Delete ...?
+            Employee Delete ...?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -64,9 +62,8 @@ const RemoveEmployee = (props) => {
           </Button>
         </DialogActions>
       </Dialog>
-
     </div>
-  )
-}
+  );
+};
 
-export default RemoveEmployee
+export default RemoveEmployee;

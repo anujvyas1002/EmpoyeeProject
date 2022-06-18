@@ -42,18 +42,15 @@
   "employees": [
     {
       "id": 165510476892,
-      "firstname": "Anuj",
+      "firstName": "Anuj",
       "lastName": "Vyas",
       "dob": "2000-12-13",
-      "employee_about": "i am a intrested",
-      "gender": "Male",
+      "employee_about": "i am a intrested ",
+      "gender": "male",
       "role": {
         "role": "Developer"
       },
       "skills": [
-        {
-          "skill": "NodeJs"
-        },
         {
           "skill": "React"
         }
@@ -61,7 +58,7 @@
     },
     {
       "id": 16456767892,
-      "firstname": "Vijay",
+      "firstName": "Vijay",
       "lastName": "Mishra",
       "dob": "2000-12-4",
       "employee_about": "i am a intrested",
@@ -80,7 +77,7 @@
     },
     {
       "id": 1655114426263,
-      "firstname": "ankit",
+      "firstName": "ankit",
       "lastName": "vyas",
       "dob": "2022-06-23",
       "employee_about": "i am ankit vyas",
@@ -99,7 +96,7 @@
     },
     {
       "id": 1655119660832,
-      "firstname": "shubam",
+      "firstName": "shubam",
       "lastName": "sen",
       "dob": "2000-03-02",
       "employee_about": "i am shubham",
@@ -115,7 +112,7 @@
     },
     {
       "id": 1655189028246,
-      "firstname": "sdfgbv",
+      "firstName": "sdfgbv",
       "lastName": "sdfb",
       "dob": "2000-03-04",
       "employee_about": "i am checker",
@@ -131,7 +128,7 @@
     },
     {
       "id": 1655378682500,
-      "firstname": "anuj",
+      "firstName": "anuj",
       "lastName": "vyas",
       "dob": "2022-06-12",
       "employee_about": "xyz",
@@ -155,37 +152,8 @@
       ]
     },
     {
-      "id": 1655378718678,
-      "firstname": "asas",
-      "lastName": "asas",
-      "dob": "2022-06-24",
-      "employee_about": "xyz",
-      "gender": "Male",
-      "role": {
-        "role": "Manager"
-      },
-      "skills": [
-        {
-          "id": 0,
-          "skill": "Java"
-        },
-        {
-          "id": 1,
-          "skill": "NodeJs"
-        },
-        {
-          "id": 2,
-          "skill": "React"
-        },
-        {
-          "id": 4,
-          "skill": "Android"
-        }
-      ]
-    },
-    {
       "id": 1655379220416,
-      "firstname": "anand",
+      "firstName": "anand",
       "lastName": "vyas",
       "dob": "2022-06-18",
       "employee_about": "xyz",
@@ -210,7 +178,7 @@
     },
     {
       "id": 1655440778456,
-      "firstname": "rahul",
+      "firstName": "rahul",
       "lastName": "xyz",
       "dob": "2022-06-22",
       "employee_about": "xyz",
@@ -231,7 +199,7 @@
     },
     {
       "id": 1655441520701,
-      "firstname": "rank",
+      "firstName": "rank",
       "lastName": "sad",
       "dob": "2022-06-29",
       "employee_about": "asdfg",
@@ -252,7 +220,7 @@
     },
     {
       "id": 1655456085061,
-      "firstname": "anuj",
+      "firstName": "anuj",
       "lastName": "vyas",
       "dob": "2022-06-13",
       "employee_about": "i am anuj",
@@ -264,27 +232,6 @@
         {
           "id": 3,
           "skill": "React"
-        }
-      ]
-    },
-    {
-      "id": 1655457325417,
-      "firstname": "wedfg",
-      "lastName": "sdfg",
-      "dob": "2022-06-19",
-      "employee_about": "assdfgh",
-      "gender": "Male",
-      "role": {
-        "role": "Tester"
-      },
-      "skills": [
-        {
-          "id": 3,
-          "skill": "React"
-        },
-        {
-          "id": 2,
-          "skill": "NodeJs"
         }
       ]
     }

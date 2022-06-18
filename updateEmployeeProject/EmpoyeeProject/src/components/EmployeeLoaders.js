@@ -1,11 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const EmployeeLoaders = () => {
-  return (
-    <div>
-      
-    </div>
-  )
-}
+  return <div></div>;
+};
 
-export default EmployeeLoaders
+export default EmployeeLoaders;
