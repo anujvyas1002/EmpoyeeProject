@@ -48,7 +48,7 @@ const UpdateEmployee = (props) => {
     setValue("role", props.employee.role.role);
     setValue("gender", props.employee.gender);
     setValue("employee_about", props.employee.employee_about);
-    setValue("skill", props.employee.skills[0].skill);
+    setValue("skill", props.employee.skills.skill);
     setShow(true);
     skillsData();
     rolesData();
