@@ -22,7 +22,7 @@ const RemoveEmployee = (props) => {
 
   function DeleteEmployee() {
     axios
-      .delete(`http://localhost:3000/employees/${props.employeeID}`)
+      .delete(`http://localhost:3000/employees/${props.employee.id}`)
       .then((response) => {
         if (response.status === 200) {
           console.log("200 success");
@@ -52,13 +52,13 @@ const RemoveEmployee = (props) => {
       >
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Employee Delete ...?
+            Are You Sure Want to Delete ? <b>{props.employee.firstName} {props.employee.lastName}</b>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>No</Button>
+          <Button onClick={handleClose}>Cancel</Button>
           <Button onClick={DeleteEmployee} autoFocus>
-            Yes
+            Ok
           </Button>
         </DialogActions>
       </Dialog>

@@ -19,7 +19,7 @@ const AddEmployee = (props) => {
     mode: "onTouched"
   });
 
-  const [value, setValue] = useState(new Date());
+  // const [selectedDate, setSelectedDate] = useState(new Date());
 
   const [show, setShow] = useState(false);
   const [skills, setSkills] = useState([]);
@@ -232,15 +232,6 @@ const AddEmployee = (props) => {
             </div>
 
             <div className="form-group">
-              {/* <label htmlFor="dob">Date of Birth</label> */}
-              {/* <Input
-                  id="dob"
-                  className="form-control"
-                  type="date"
-                  // defaultValue="2022-06-09"
-                  {...register("dob", { required: "DOB is Required" })}
-                /> */}
-
               <LocalizationProvider dateAdapter={AdapterDateFns}>
               <label htmlFor="dob">Date of Birth</label>
                 
@@ -248,19 +239,19 @@ const AddEmployee = (props) => {
                      <DesktopDatePicker
                     // label="For desktop"
                     inputFormat="dd/MM/yyyy"
-                    value={value}
+                    // value = {selectedDate}
                     className="form-control"
                     {...register("dob", { required: "DOB is Required" })}
-                    maxDate={new Date()}
-                    onChange={(newValue) => {
-                      setValue(newValue);
-                    }}
+                    // onChange={(newValue) => {
+                    //   setSelectedDate(newValue);
+                    // }}
+                      maxDate={new Date()}
                     renderInput={(params) => <TextField {...params} />}
                   />
                 </Stack>
               </LocalizationProvider>
 
-              {errors.dob && <span> {errors.dob.message}</span>}
+              {errors.dob && <span  className="text-danger"> {errors.dob.message}</span>}
             </div>
 
             <div className="form-group">

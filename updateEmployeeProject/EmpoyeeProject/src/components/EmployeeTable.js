@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import React, { useState } from "react";
 import axios from "axios";
 import AddEmployee from "./AddEmployee";
@@ -22,7 +23,7 @@ const EmployeeTable = () => {
   const [employees, setEmployees] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [searchApiData, setSearchApiData] = useState([]);
+  const [searchApiData, setSearchApiData] = useState();
   const [filterVal, setFilterVal] = useState();
 
   const handleChangePage = (event, newPage) => {
@@ -64,31 +65,48 @@ const EmployeeTable = () => {
       setEmployees(response.data);
       console.log(response.data);
       setSearchApiData(response.data);
-      console.log("anuj" + response.data[0].skills[0].skill);
+      console.log(response.data);
     });
   }
 
+
+  const filterSkills = (e,skills) =>{
+    return skills.some(skill=>skill.skill.toLowerCase().includes(e))
+  }
+
   const handleFilter = (e) => {
+
+    // console.log(searchApiData);
+    
+
     if (e.target.value === "") {
       setEmployees(searchApiData);
-    } else {
+    }
+     else {
       //  for(let i=0;i<searchApiData.length;i++){
-      //   console.log(searchApiData[i].id)
+      //   console.log(searchApiData[i].skill)
       //  }
 
-      const filtered = Object.keys(searchApiData)
-        .filter((key) => e.target.value.includes(key))
-        .reduce((obj, key) => {
-          return {
-            ...obj,
-            [key]: searchApiData[key]
-          };
-        }, {});
+      
+        // console.log(searchApiData[0].skills.length);
+        // console.log(searchApiData.length);
+        // for(let i=0;i<searchApiData.length;i++){
+          // if(searchApiData[i].skills!===undefined){}
+        //   if(searchApiData[i].skills.toLowerCase().includes(e.target.value.toLowerCase())){
+        //     console.log("success")
+        //     return(true);
+        //   }
+        //   else{
+        //     return false
+        //   }
+        // }
+      
+   
 
-      console.log(filtered);
-      const filterResult = searchApiData.filter((item) =>
-        item.firstName.toLowerCase().includes(e.target.value.toLowerCase())
-      );
+      const filterResult = searchApiData.filter((item) => {
+        return(
+        (item.firstName.toLowerCase().includes(e.target.value.toLowerCase())) || (item.lastName.toLowerCase().includes(e.target.value.toLowerCase()))
+         || filterSkills(e.target.value.toLowerCase(),item.skills) || (item.role.role.toLowerCase().includes(e.target.value.toLowerCase())))});
 
       setEmployees(filterResult);
     }
@@ -166,7 +184,7 @@ const EmployeeTable = () => {
                         </IconButton>
                         <IconButton color="error">
                           <RemoveEmployee
-                            employeeID={employee.id}
+                            employee={employee}
                             fetchAllRecord={fetchAllRecord}
                           />
                         </IconButton>

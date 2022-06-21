@@ -4,12 +4,19 @@ import { Button, Input, NativeSelect } from "@mui/material";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import EditIcon from "@mui/icons-material/Edit";
+import Stack from "@mui/material/Stack";
+import TextField from "@mui/material/TextField";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+
 
 const UpdateEmployee = (props) => {
   const {
     register,
     setValue,
     handleSubmit,
+    resetField,
     formState: { errors, isDirty, isValid }
   } = useForm({
     mode: "onTouched"
@@ -17,13 +24,18 @@ const UpdateEmployee = (props) => {
   const [show, setShow] = useState(false);
   const [skills, setSkills] = React.useState([]);
   const [roles, setRoles] = React.useState([]);
+  const [selectedSkills, setSelectedSkills] = useState(props.employee.skills);
+ 
+  
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
-  const AddSkill = [];
+
   let req;
   // console.log(errors)
   const onSubmit = (data) => {
     console.log(data);
-    console.log(AddSkill);
+   
+   
     req = {
       id: Date.now(),
       firstName: data.firstName,
@@ -32,7 +44,7 @@ const UpdateEmployee = (props) => {
       employee_about: data.employee_about,
       gender: data.gender,
       role: { role: data.role },
-      skills: AddSkill
+      skills: selectedSkills
     };
     handleClose();
     UpdateEmployee(req);
@@ -48,60 +60,32 @@ const UpdateEmployee = (props) => {
     setValue("role", props.employee.role.role);
     setValue("gender", props.employee.gender);
     setValue("employee_about", props.employee.employee_about);
-    setValue("skill", props.employee.skills.skill);
+   
+    console.log(selectedSkills);
+   
     setShow(true);
     skillsData();
     rolesData();
   };
 
-  function skillCheck(e) {
+  function skillCheck(e,skill) {
     console.log(e.target.id);
+    console.log(skill);
+    console.log(skills);
+    let newSkills = [...selectedSkills];
+   
 
-    if (e.target.name === "Java") {
-      AddSkill.push({ skill: "Java" });
+    var index = selectedSkills.findIndex((o) => o.id === skill.id);
+    console.log("index" + index);
+    if (index === -1) {
+      newSkills.push(skill);
     } else {
-      for (let i = 0; i < AddSkill.length; i++) {
-        if (AddSkill[i] === AddSkill[i].skill && e.target.name === "Java") {
-          AddSkill.splice(i, 1);
-        }
-      }
+      newSkills.splice(index, 1);
     }
-    if (e.target.name === "NodeJs") {
-      AddSkill.push({ skill: "NodeJs" });
-    } else {
-      for (let i = 0; i < AddSkill.length; i++) {
-        if (AddSkill[i] === AddSkill[i].skill) {
-          AddSkill.splice(i, 1);
-        }
-      }
-    }
-    if (e.target.name === "React") {
-      AddSkill.push({ skill: "React" });
-    } else {
-      for (let i = 0; i < AddSkill.length; i++) {
-        if (AddSkill[i] === AddSkill[i].React) {
-          AddSkill.splice(i, 1);
-        }
-      }
-    }
-    if (e.target.name === "Angular") {
-      AddSkill.push({ skill: "Angular" });
-    } else {
-      for (let i = 0; i < AddSkill.length; i++) {
-        if (AddSkill[i] === AddSkill[i].skill) {
-          AddSkill.splice(i, 1);
-        }
-      }
-    }
-    if (e.target.name === "Android") {
-      AddSkill.push({ skill: "Angular" });
-    } else {
-      for (let i = 0; i < AddSkill.length; i++) {
-        if (AddSkill[i] === AddSkill[i].skill) {
-          AddSkill.splice(i, 1);
-        }
-      }
-    }
+
+    console.log(newSkills);
+    setSelectedSkills(newSkills);
+    
   }
 
   function UpdateEmployee(req) {
@@ -109,6 +93,7 @@ const UpdateEmployee = (props) => {
       .put(`http://localhost:3000/employees/${props.employee.id}`, req)
       .then((response) => {
         if (response.status === 200) {
+          resetField("skills");
           console.log("200 success");
           props.fetchAllRecord();
         } else if (response.status === 201) {
@@ -128,7 +113,8 @@ const UpdateEmployee = (props) => {
   function skillsData() {
     axios.get(`http://localhost:3000/skills`).then((response) => {
       setSkills(response.data);
-      console.log(response.data);
+      // console.log(response.data[0].skill);
+      
     });
   }
 
@@ -209,11 +195,11 @@ const UpdateEmployee = (props) => {
                   className="form-check-input"
                   type="radio"
                   id="male"
-                  value="male"
+                  value="Male"
                   {...register("gender", { required: "Gender is Required" })}
                 />
                 <label className="form-check-label" htmlFor="male">
-                  male
+                  Male
                 </label>
               </div>
               <div className="form-check form-check-inline">
@@ -221,12 +207,12 @@ const UpdateEmployee = (props) => {
                   className="form-check-input"
                   type="radio"
                   id="female"
-                  value="female"
+                  value="Female"
                   name="gender"
                   {...register("gender", { required: "Gender is Required" })}
                 />
                 <label className="form-check-label" htmlFor="female">
-                  female
+                  Female
                 </label>
               </div>
               <div className="form-check form-check-inline">
@@ -234,11 +220,11 @@ const UpdateEmployee = (props) => {
                   className="form-check-input"
                   type="radio"
                   id="other"
-                  value="other"
+                  value="Other"
                   {...register("gender", { required: "Gender is Required" })}
                 />
                 <label className="form-check-label" htmlFor="other">
-                  other
+                  Other
                 </label>
               </div>
 
@@ -246,19 +232,27 @@ const UpdateEmployee = (props) => {
                 <div className="text-danger"> {errors.gender.message}</div>
               )}
             </div>
-
             <div className="form-group">
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
               <label htmlFor="dob">Date of Birth</label>
-              <Input
-                id="dob"
-                className="form-control"
-                type="date"
-                // defaultValue="2022-06-09"
-                {...register("dob", { required: "DOB is Required" })}
-              />
-              {errors.dob && (
-                <div className="text-danger"> {errors.dob.message}</div>
-              )}
+                
+                <Stack spacing={3}>
+                     <DesktopDatePicker
+                    // label="For desktop"
+                    inputFormat="dd/MM/yyyy"
+                    value={selectedDate}
+                    className="form-control"
+                    {...register("dob", { required: "DOB is Required" })}
+                    maxDate={new Date()}
+                    onChange={(newValue) => {
+                      setSelectedDate(newValue);
+                    }}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </Stack>
+              </LocalizationProvider>
+
+              {errors.dob && <span className="text-danger"> {errors.dob.message}</span>}
             </div>
 
             <div className="form-group">
@@ -305,7 +299,7 @@ const UpdateEmployee = (props) => {
               )}
             </div>
 
-            <label htmlFor="skill">Skills</label>
+            {/* <label htmlFor="skill">Skills</label>
             <div className="form-control">
               {skills.map((skill) => (
                 //  <input type="Checkbox" {...register("skill")} value={item.skill} name={item.skill} onChange={e => skillCheck(e)} key={index} label={item.skill} />
@@ -322,10 +316,34 @@ const UpdateEmployee = (props) => {
                   </label>
                 </div>
               ))}
+            </div> */}
+
+      <label htmlFor="skills">Skills</label>
+            <div className="form-control">
+              {skills.map((skill) => (
+                <div className="form-check" key={skill.id}>
+                  <input
+                    type="Checkbox"
+                    {...register("skills", { required: true })}
+                    id={skill.id}
+                    name="skills"
+                    value="skills"
+                    checked={selectedSkills.findIndex(o => o.id === skill.id)!==-1}
+                    onChange={(e) => skillCheck(e, skill)}
+                  />
+                  <label className="form-check-label" htmlFor={skill.id}>
+                    {skill.skill}
+                  </label>
+                </div>
+              ))}
+
+              {selectedSkills.length < 1 &&
+                errors.skills?.type === "required" && (
+                  <div className="text-danger">Enter your Minimum 1 Skills</div>
+                )}
             </div>
 
-            <hr></hr>
-            <hr></hr>
+            <hr/>
             <Button
               variant="contained"
               className="float-end mt-2"
