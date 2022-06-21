@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-
 import axios from "axios";
 
 function SearchEmployee() {
@@ -14,12 +13,10 @@ function SearchEmployee() {
 
   return (
     <div >
-      <input
-        
+      <input        
         placeholder="Search..."
         onChange={(e) => setQuery(e.target.value)}
       />
-      
     </div>
   );
 }

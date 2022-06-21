@@ -1,15 +1,12 @@
 import React, { useState } from "react";
 import { Modal } from "react-bootstrap";
-import { Button, Input, NativeSelect } from "@mui/material";
+import { Button, Input, NativeSelect, Stack, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import EditIcon from "@mui/icons-material/Edit";
-import Stack from "@mui/material/Stack";
-import TextField from "@mui/material/TextField";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
-
 
 const UpdateEmployee = (props) => {
   const {
@@ -25,22 +22,16 @@ const UpdateEmployee = (props) => {
   const [skills, setSkills] = React.useState([]);
   const [roles, setRoles] = React.useState([]);
   const [selectedSkills, setSelectedSkills] = useState(props.employee.skills);
- 
-  
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(props.employee.dob);
 
-
+  console.log(props.employee.dob)
   let req;
-  // console.log(errors)
   const onSubmit = (data) => {
-    console.log(data);
-   
-   
     req = {
       id: Date.now(),
       firstName: data.firstName,
       lastName: data.lastName,
-      dob: data.dob,
+      dob: selectedDate,
       employee_about: data.employee_about,
       gender: data.gender,
       role: { role: data.role },
@@ -51,8 +42,9 @@ const UpdateEmployee = (props) => {
   };
 
   const handleClose = () => setShow(false);
+
+   
   const handleShow = () => {
-    console.log(props.employee.role.role);
     setValue("id", props.employee.id);
     setValue("firstName", props.employee.firstName);
     setValue("lastName", props.employee.lastName);
@@ -60,32 +52,21 @@ const UpdateEmployee = (props) => {
     setValue("role", props.employee.role.role);
     setValue("gender", props.employee.gender);
     setValue("employee_about", props.employee.employee_about);
-   
-    console.log(selectedSkills);
-   
+
     setShow(true);
     skillsData();
     rolesData();
   };
 
-  function skillCheck(e,skill) {
-    console.log(e.target.id);
-    console.log(skill);
-    console.log(skills);
+  function skillCheck(e, skill) {
     let newSkills = [...selectedSkills];
-   
-
     var index = selectedSkills.findIndex((o) => o.id === skill.id);
-    console.log("index" + index);
     if (index === -1) {
       newSkills.push(skill);
     } else {
       newSkills.splice(index, 1);
     }
-
-    console.log(newSkills);
     setSelectedSkills(newSkills);
-    
   }
 
   function UpdateEmployee(req) {
@@ -113,15 +94,12 @@ const UpdateEmployee = (props) => {
   function skillsData() {
     axios.get(`http://localhost:3000/skills`).then((response) => {
       setSkills(response.data);
-      // console.log(response.data[0].skill);
-      
     });
   }
 
   function rolesData() {
     axios.get(`http://localhost:3000/roles`).then((response) => {
       setRoles(response.data);
-      console.log(response.data);
     });
   }
 
@@ -227,32 +205,31 @@ const UpdateEmployee = (props) => {
                   Other
                 </label>
               </div>
-
               {errors.gender && (
                 <div className="text-danger"> {errors.gender.message}</div>
               )}
             </div>
             <div className="form-group">
               <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <label htmlFor="dob">Date of Birth</label>
-                
+                <label htmlFor="dob">Date of Birth</label>
                 <Stack spacing={3}>
-                     <DesktopDatePicker
+                  <DesktopDatePicker
                     // label="For desktop"
                     inputFormat="dd/MM/yyyy"
-                    value={selectedDate}
                     className="form-control"
+                    value={selectedDate}
                     {...register("dob", { required: "DOB is Required" })}
-                    maxDate={new Date()}
                     onChange={(newValue) => {
                       setSelectedDate(newValue);
                     }}
+                    maxDate={new Date()}
                     renderInput={(params) => <TextField {...params} />}
                   />
                 </Stack>
               </LocalizationProvider>
-
-              {errors.dob && <span className="text-danger"> {errors.dob.message}</span>}
+              {errors.dob && (
+                <span className="text-danger"> {errors.dob.message}</span>
+              )}
             </div>
 
             <div className="form-group">
@@ -262,7 +239,6 @@ const UpdateEmployee = (props) => {
                 id="role"
                 {...register("role", { required: "Role is Required" })}
               >
-                {/* <option  value="">--- Select Your Roles ---</option> */}
                 {roles.map((role) => (
                   <option key={role.id}>{role.role}</option>
                 ))}
@@ -298,27 +274,7 @@ const UpdateEmployee = (props) => {
                 </div>
               )}
             </div>
-
-            {/* <label htmlFor="skill">Skills</label>
-            <div className="form-control">
-              {skills.map((skill) => (
-                //  <input type="Checkbox" {...register("skill")} value={item.skill} name={item.skill} onChange={e => skillCheck(e)} key={index} label={item.skill} />
-                <div className="form-check" key={skill.id}>
-                  <input
-                    type="Checkbox"
-                    {...register("skill")}
-                    id={skills.id}
-                    name={skill.skill}
-                    onChange={(e) => skillCheck(e)}
-                  />
-                  <label className="form-check-label" htmlFor={skill.id}>
-                    {skill.skill}
-                  </label>
-                </div>
-              ))}
-            </div> */}
-
-      <label htmlFor="skills">Skills</label>
+            <label htmlFor="skills">Skills</label>
             <div className="form-control">
               {skills.map((skill) => (
                 <div className="form-check" key={skill.id}>
@@ -328,7 +284,9 @@ const UpdateEmployee = (props) => {
                     id={skill.id}
                     name="skills"
                     value="skills"
-                    checked={selectedSkills.findIndex(o => o.id === skill.id)!==-1}
+                    checked={
+                      selectedSkills.findIndex((o) => o.id === skill.id) !== -1
+                    }
                     onChange={(e) => skillCheck(e, skill)}
                   />
                   <label className="form-check-label" htmlFor={skill.id}>
@@ -343,7 +301,7 @@ const UpdateEmployee = (props) => {
                 )}
             </div>
 
-            <hr/>
+            <hr />
             <Button
               variant="contained"
               className="float-end mt-2"
@@ -363,7 +321,6 @@ const UpdateEmployee = (props) => {
           </form>
         </Modal.Body>
       </Modal>
-
       <EditIcon onClick={handleShow} />
     </div>
   );

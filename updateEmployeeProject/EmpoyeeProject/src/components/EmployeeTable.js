@@ -1,23 +1,23 @@
-/* eslint-disable array-callback-return */
 import React, { useState } from "react";
 import axios from "axios";
 import AddEmployee from "./AddEmployee";
 import UpdateEmployee from "./UpdateEmployee";
 import RemoveEmployee from "./RemoveEmployee";
 import SearchEmployee from "./SearchEmployee";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import TablePagination from "@mui/material/TablePagination";
-import IconButton from "@mui/material/IconButton";
-import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
-
-import { Button, Input } from "@mui/material";
-
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  TablePagination,
+  IconButton,
+  Button,
+  Input
+} from "@mui/material";
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 
 const EmployeeTable = () => {
   const [employees, setEmployees] = useState([]);
@@ -35,14 +35,8 @@ const EmployeeTable = () => {
     setPage(0);
   };
 
-  // const handleDelete = () => {
-
-  // };
-
   React.useEffect(() => {
     axios.get(`http://localhost:3000/employees`).then((response) => {
-      console.log(response.data);
-
       if (response.status === 200) {
         console.log("200 success");
         fetchAllRecord();
@@ -63,60 +57,33 @@ const EmployeeTable = () => {
   function fetchAllRecord() {
     axios.get(`http://localhost:3000/employees`).then((response) => {
       setEmployees(response.data);
-      console.log(response.data);
       setSearchApiData(response.data);
-      console.log(response.data);
     });
   }
 
-
-  const filterSkills = (e,skills) =>{
-    return skills.some(skill=>skill.skill.toLowerCase().includes(e))
-  }
+  const filterSkills = (e, skills) => {
+    return skills.some((skill) => skill.skill.toLowerCase().includes(e));
+  };
 
   const handleFilter = (e) => {
-
-    // console.log(searchApiData);
-    
-
     if (e.target.value === "") {
       setEmployees(searchApiData);
-    }
-     else {
-      //  for(let i=0;i<searchApiData.length;i++){
-      //   console.log(searchApiData[i].skill)
-      //  }
-
-      
-        // console.log(searchApiData[0].skills.length);
-        // console.log(searchApiData.length);
-        // for(let i=0;i<searchApiData.length;i++){
-          // if(searchApiData[i].skills!===undefined){}
-        //   if(searchApiData[i].skills.toLowerCase().includes(e.target.value.toLowerCase())){
-        //     console.log("success")
-        //     return(true);
-        //   }
-        //   else{
-        //     return false
-        //   }
-        // }
-      
-   
-
+    } else {
       const filterResult = searchApiData.filter((item) => {
-        return(
-        (item.firstName.toLowerCase().includes(e.target.value.toLowerCase())) || (item.lastName.toLowerCase().includes(e.target.value.toLowerCase()))
-         || filterSkills(e.target.value.toLowerCase(),item.skills) || (item.role.role.toLowerCase().includes(e.target.value.toLowerCase())))});
-
+        return (
+          item.firstName.toLowerCase().includes(e.target.value.toLowerCase()) ||
+          item.lastName.toLowerCase().includes(e.target.value.toLowerCase()) ||
+          filterSkills(e.target.value.toLowerCase(), item.skills) ||
+          item.role.role.toLowerCase().includes(e.target.value.toLowerCase())
+        );
+      });
       setEmployees(filterResult);
     }
-
     setFilterVal(e.target.value);
   };
 
   return (
     <div>
-      
       <div>
         <div className="float-end mt-3">
           <Input
@@ -124,28 +91,26 @@ const EmployeeTable = () => {
             value={filterVal || ""}
             onChange={(e) => handleFilter(e)}
           />
-          <Button><SearchOutlinedIcon/></Button>
+          <Button>
+            <SearchOutlinedIcon />
+          </Button>
         </div>
-        
-       
-       <SearchEmployee/>
-        
+        <SearchEmployee />
         <div>
-          <div><AddEmployee fetchAllRecord={fetchAllRecord} /></div>
-       
+          <AddEmployee fetchAllRecord={fetchAllRecord} />
         </div>
-       
-       
-        
-
-        
-         <hr></hr>
+        <hr />
         <Paper sx={{ width: "100%", mb: 0 }}>
           <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} className='table table-striped table-hover'  size="small" aria-label="simple table">
+            <Table
+              sx={{ minWidth: 650 }}
+              className="table table-striped table-hover"
+              size="small"
+              aria-label="simple table"
+            >
               <TableHead>
                 <TableRow>
-                  <TableCell >First Name</TableCell>
+                  <TableCell>First Name</TableCell>
                   <TableCell>Last Name</TableCell>
                   <TableCell>DOB</TableCell>
                   <TableCell>Gender</TableCell>
@@ -173,7 +138,6 @@ const EmployeeTable = () => {
                           <div key={index}>{skill.skill}</div>
                         ))}
                       </TableCell>
-
                       <TableCell>{employee.employee_about}</TableCell>
                       <TableCell>
                         <IconButton color="primary">

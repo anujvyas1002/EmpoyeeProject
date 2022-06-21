@@ -40,10 +40,10 @@ const RemoveEmployee = (props) => {
         }
       });
   }
+
   return (
     <div>
       <DeleteIcon onClick={handleClickOpen} />
-
       <Dialog
         open={open}
         onClose={handleClose}
@@ -52,7 +52,10 @@ const RemoveEmployee = (props) => {
       >
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Are You Sure Want to Delete ? <b>{props.employee.firstName} {props.employee.lastName}</b>
+            Are You Sure Want to Delete ?{" "}
+            <b>
+              {props.employee.firstName} {props.employee.lastName}
+            </b>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
