@@ -17,19 +17,29 @@ const AddEmployee = (props) => {
     mode: "onTouched"
   });
 
+  // Modal state
   const [show, setShow] = useState(false);
+
+  //skills get state
   const [skills, setSkills] = useState([]);
+
+  // roles get state
   const [roles, setRoles] = useState([]);
+
+  // selected Skill mantain state
   const [selectedSkills, setSelectedSkills] = useState([]);
+
+  // SelectedDate mantain
   const [selectedDate, setSelectedDate] = useState();
 
   let req;
+
+  //from data
   const onSubmit = (data) => {
     console.log(data);
     // const datecheck = new Date(selectedDate)
-    // const NewDate = datecheck.getDate()+'-'+(datecheck.getMonth() + 1)+'-'+datecheck.getFullYear();
+    // const NewDate = (datecheck.getDate())+'-'+(datecheck.getMonth() + 1)+'-'+datecheck.getFullYear();
     // console.log(NewDate);
-    
     req = {
       id: Date.now(),
       firstName: data.firstName,
@@ -41,12 +51,11 @@ const AddEmployee = (props) => {
       skills: selectedSkills
     };
     handleClose();
-    createPost(req);
+    createEmployee(req);
   };
 
- 
-
-  function createPost(req) {
+  //createEmployee Data send Api Call & reset input filed
+  function createEmployee(req) {
     axios.post("http://localhost:3000/employees", req).then((response) => {
       console.log(response)
       props.fetchAllRecord();
@@ -75,25 +84,31 @@ const AddEmployee = (props) => {
     });
   }
 
+ //skill data get Api call
   function skillsData() {
     axios.get(`http://localhost:3000/skills`).then((response) => {
       setSkills(response.data);
     });
   }
 
+  //Role data get Api call
   function rolesData() {
     axios.get(`http://localhost:3000/roles`).then((response) => {
       setRoles(response.data);
     });
   }
 
+ //Modal popup close
   const handleClose = () => setShow(false);
+
+  //Modal popup show
   const handleShow = () => {
     setShow(true);
     skillsData();
     rolesData();
   };
 
+  // Skillls Input filed condition
   function skillCheck(e, skill) {
     let newSkills = [...selectedSkills];
     var index = selectedSkills.findIndex((o) => o.id === skill.id);

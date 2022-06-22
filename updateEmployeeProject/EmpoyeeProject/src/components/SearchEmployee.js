@@ -14,7 +14,7 @@ function SearchEmployee() {
   return (
     <div >
       <input        
-        placeholder="Search..."
+        placeholder="Server Side Search..."
         onChange={(e) => setQuery(e.target.value)}
       />
     </div>

@@ -18,14 +18,26 @@ const UpdateEmployee = (props) => {
   } = useForm({
     mode: "onTouched"
   });
+
+  // Modal state
   const [show, setShow] = useState(false);
-  const [skills, setSkills] = React.useState([]);
-  const [roles, setRoles] = React.useState([]);
+
+  //skills get state
+  const [skills, setSkills] = useState([]);
+
+  // roles get state
+  const [roles, setRoles] = useState([]);
+
+  // selected Skill mantain state
   const [selectedSkills, setSelectedSkills] = useState(props.employee.skills);
+
+  // SelectedDate mantain
   const [selectedDate, setSelectedDate] = useState(props.employee.dob);
 
-  console.log(props.employee.dob)
+  console.log(props.employee.dob);
   let req;
+
+  //from data
   const onSubmit = (data) => {
     req = {
       id: Date.now(),
@@ -41,9 +53,10 @@ const UpdateEmployee = (props) => {
     UpdateEmployee(req);
   };
 
+  //Modal popup Close
   const handleClose = () => setShow(false);
 
-   
+  //Modal popup show && setValue for input filed
   const handleShow = () => {
     setValue("id", props.employee.id);
     setValue("firstName", props.employee.firstName);
@@ -58,6 +71,7 @@ const UpdateEmployee = (props) => {
     rolesData();
   };
 
+  // Skills input filed Condition
   function skillCheck(e, skill) {
     let newSkills = [...selectedSkills];
     var index = selectedSkills.findIndex((o) => o.id === skill.id);
@@ -69,6 +83,7 @@ const UpdateEmployee = (props) => {
     setSelectedSkills(newSkills);
   }
 
+  // UpdateEmployee Put Api call
   function UpdateEmployee(req) {
     axios
       .put(`http://localhost:3000/employees/${props.employee.id}`, req)
@@ -91,12 +106,14 @@ const UpdateEmployee = (props) => {
       });
   }
 
+  //Skills get Api call
   function skillsData() {
     axios.get(`http://localhost:3000/skills`).then((response) => {
       setSkills(response.data);
     });
   }
 
+  //Roles get Api call
   function rolesData() {
     axios.get(`http://localhost:3000/roles`).then((response) => {
       setRoles(response.data);

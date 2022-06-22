@@ -12,14 +12,17 @@ import {
 const RemoveEmployee = (props) => {
   const [open, setOpen] = React.useState(false);
 
+  //conformation box open
   const handleClickOpen = () => {
     setOpen(true);
   };
 
+  //conformation box Close
   const handleClose = () => {
     setOpen(false);
   };
 
+  // Delete Employee Delete Api Call
   function DeleteEmployee() {
     axios
       .delete(`http://localhost:3000/employees/${props.employee.id}`)
@@ -43,7 +46,10 @@ const RemoveEmployee = (props) => {
 
   return (
     <div>
+      {/* Delete Icon */}
       <DeleteIcon onClick={handleClickOpen} />
+
+      {/* conformation Box */}
       <Dialog
         open={open}
         onClose={handleClose}
