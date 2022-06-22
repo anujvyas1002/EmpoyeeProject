@@ -34,7 +34,6 @@ const UpdateEmployee = (props) => {
   // SelectedDate mantain
   const [selectedDate, setSelectedDate] = useState(props.employee.dob);
 
-  console.log(props.employee.dob);
   let req;
 
   //from data
