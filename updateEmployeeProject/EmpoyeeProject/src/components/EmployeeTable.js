@@ -4,6 +4,9 @@ import AddEmployee from "./AddEmployee";
 import UpdateEmployee from "./UpdateEmployee";
 import RemoveEmployee from "./RemoveEmployee";
 import SearchEmployee from "./SearchEmployee";
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress'
+
 import {
   Table,
   TableBody,
@@ -18,6 +21,7 @@ import {
   Input
 } from "@mui/material";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import EmployeeMessages from "./EmployeeMessages";
 
 const EmployeeTable = () => {
   // All Data handle for employees 
@@ -35,6 +39,16 @@ const EmployeeTable = () => {
   // handle for filter value
   const [filterVal, setFilterVal] = useState();
 
+  // Loader 
+  const [loaderOpen, setLoaderOpen] = React.useState(false);
+  
+  const loaderClose = () => {
+    setLoaderOpen(false);
+  };
+  const loaderOn = () => {
+    setLoaderOpen(!loaderOpen);
+  };
+
   // pagination set new Page
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -48,9 +62,11 @@ const EmployeeTable = () => {
 
   // employees data get api call 
   React.useEffect(() => {
+    loaderOn();
     axios.get(`http://localhost:3000/employees`).then((response) => {
       if (response.status === 200) {
         console.log("200 success");
+        loaderClose();
         fetchAllRecord();
       } else if (response.status === 201) {
         console.log("201 Created");
@@ -64,6 +80,7 @@ const EmployeeTable = () => {
         console.log("other error");
       }
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   //All Data get Api fir function calling
@@ -99,6 +116,16 @@ const EmployeeTable = () => {
 
   return (
     <>
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loaderOpen}
+        onClick={loaderClose}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+      <div>
+        <EmployeeMessages message="successs Message"/>
+      </div>
       <div>
         {/* Searching input box */}
         <div className="float-end mt-3">

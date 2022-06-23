@@ -58,15 +58,15 @@ const RemoveEmployee = (props) => {
       >
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Are You Sure Want to Delete ?{" "}
+            Are you sure want to delete {" "}
             <b>
-              {props.employee.firstName} {props.employee.lastName}
-            </b>
+              {props.employee.firstName} {props.employee.lastName} ?
+            </b> 
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={DeleteEmployee} autoFocus>
+          <Button variant="contained" color="primary" onClick={DeleteEmployee} autoFocus>
             Ok
           </Button>
         </DialogActions>

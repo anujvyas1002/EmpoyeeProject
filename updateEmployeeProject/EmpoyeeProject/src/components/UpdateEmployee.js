@@ -32,8 +32,19 @@ const UpdateEmployee = (props) => {
   const [selectedSkills, setSelectedSkills] = useState(props.employee.skills);
 
   // SelectedDate mantain
-  const [selectedDate, setSelectedDate] = useState(props.employee.dob);
+  const [selectedDate, setSelectedDate] = useState(formatDate(props.employee.dob));
 
+  
+// date format
+  function formatDate(timestamp){
+    var x= new Date(timestamp);
+    var dd = x.getDate();
+    var mm = x.getMonth()+1;
+    var yy = x.getFullYear();
+    return  dd +"/" + mm+"/" + yy;
+ }
+
+  //data send for object
   let req;
 
   //from data
@@ -42,7 +53,7 @@ const UpdateEmployee = (props) => {
       id: Date.now(),
       firstName: data.firstName,
       lastName: data.lastName,
-      dob: selectedDate,
+      dob: formatDate(selectedDate),
       employee_about: data.employee_about,
       gender: data.gender,
       role: { role: data.role },
@@ -55,8 +66,10 @@ const UpdateEmployee = (props) => {
   //Modal popup Close
   const handleClose = () => setShow(false);
 
+  
   //Modal popup show && setValue for input filed
   const handleShow = () => {
+    console.log(props.employee.dob);
     setValue("id", props.employee.id);
     setValue("firstName", props.employee.firstName);
     setValue("lastName", props.employee.lastName);
@@ -87,6 +100,7 @@ const UpdateEmployee = (props) => {
     axios
       .put(`http://localhost:3000/employees/${props.employee.id}`, req)
       .then((response) => {
+        console.log(response)
         if (response.status === 200) {
           resetField("skills");
           console.log("200 success");
@@ -123,7 +137,7 @@ const UpdateEmployee = (props) => {
     <div>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>{props.employee.firstName} Upadate Empoyee </Modal.Title>
+          <Modal.Title>Upadate {props.employee.firstName} {props.employee.lastName}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form onSubmit={handleSubmit(onSubmit)}>

@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+// import EmployeeMessages from "./components/EmployeeMessages";
 // import { DatePiker } from "./components/DatePiker";
 import EmployeeTable from "./components/EmployeeTable";
 import "./index.css";
@@ -10,6 +11,7 @@ root.render(
   <React.StrictMode>
     <EmployeeTable/>
    {/* <DatePiker/> */}
+   {/* <EmployeeMessages/> */}
   </React.StrictMode>
 );
 

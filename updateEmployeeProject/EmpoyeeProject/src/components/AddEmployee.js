@@ -6,6 +6,7 @@ import axios from "axios";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+// import Loaders from "./Loaders";
 
 const AddEmployee = (props) => {
   const {
@@ -32,19 +33,26 @@ const AddEmployee = (props) => {
   // SelectedDate mantain
   const [selectedDate, setSelectedDate] = useState();
 
+  
+// date format
+  function formatDate(timestamp){
+    var x= new Date(timestamp);
+    var dd = x.getDate();
+    var mm = x.getMonth()+1;
+    var yy = x.getFullYear();
+    return dd +"/" + mm+"/" + yy;
+ }
+ 
+ //data send for object
   let req;
 
   //from data
   const onSubmit = (data) => {
-    console.log(data);
-    // const datecheck = new Date(selectedDate)
-    // const NewDate = (datecheck.getDate())+'-'+(datecheck.getMonth() + 1)+'-'+datecheck.getFullYear();
-    // console.log(NewDate);
     req = {
       id: Date.now(),
       firstName: data.firstName,
       lastName: data.lastName,
-      dob: selectedDate,
+      dob: formatDate(selectedDate),
       employee_about: data.employee_about,
       gender: data.gender,
       role: { role: data.role },
@@ -66,7 +74,9 @@ const AddEmployee = (props) => {
       resetField("role");
       resetField("gender");
       resetField("employee_about");
-      resetField("skills");
+      resetField("skills")
+      resetField("selectedSkills");
+      resetField("setSelectedSkills");
 
       if (response.status === 200) {
         console.log("200 success");
@@ -348,6 +358,10 @@ const AddEmployee = (props) => {
           </form>
         </Modal.Body>
       </Modal>
+
+      {/* Loader */}
+      {/* <Loaders /> */}
+
     </div>
   );
 };
