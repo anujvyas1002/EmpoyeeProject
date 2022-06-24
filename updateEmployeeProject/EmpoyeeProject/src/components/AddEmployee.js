@@ -37,10 +37,11 @@ const AddEmployee = (props) => {
 // date format
   function formatDate(timestamp){
     var x= new Date(timestamp);
-    var dd = x.getDate();
-    var mm = x.getMonth()+1;
-    var yy = x.getFullYear();
-    return dd +"/" + mm+"/" + yy;
+    var DD = x.getDate();
+    var MM = x.getMonth()+1;
+    var YYYY = x.getFullYear();
+    return YYYY +"/" + MM+"/" + DD;
+   
  }
  
  //data send for object

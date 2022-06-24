@@ -60,6 +60,16 @@ const EmployeeTable = () => {
     setPage(0);
   };
 
+  // date format
+  function formatDate(timestamp){
+    var x= new Date(timestamp);
+    var DD = x.getDate();
+    var MM = x.getMonth()+1;
+    var YYYY = x.getFullYear();
+    return DD +"/" + MM+"/" + YYYY;
+   
+ }
+
   // employees data get api call 
   React.useEffect(() => {
     loaderOn();
@@ -179,7 +189,7 @@ const EmployeeTable = () => {
                     >
                       <TableCell>{employee.firstName}</TableCell>
                       <TableCell>{employee.lastName}</TableCell>
-                      <TableCell>{employee.dob}</TableCell>
+                      <TableCell>{formatDate(employee.dob)}</TableCell>
                       <TableCell>{employee.gender}</TableCell>
                       <TableCell>{employee.role.role}</TableCell>
                       <TableCell>

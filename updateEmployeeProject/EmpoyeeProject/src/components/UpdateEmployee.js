@@ -32,16 +32,16 @@ const UpdateEmployee = (props) => {
   const [selectedSkills, setSelectedSkills] = useState(props.employee.skills);
 
   // SelectedDate mantain
-  const [selectedDate, setSelectedDate] = useState(formatDate(props.employee.dob));
+  const [selectedDate, setSelectedDate] = useState(props.employee.dob);
 
   
 // date format
   function formatDate(timestamp){
     var x= new Date(timestamp);
-    var dd = x.getDate();
-    var mm = x.getMonth()+1;
-    var yy = x.getFullYear();
-    return  dd +"/" + mm+"/" + yy;
+    var DD = x.getDate();
+    var MM = x.getMonth()+1;
+    var YYYY = x.getFullYear();
+    return YYYY +"/" + MM+"/" + DD;
  }
 
   //data send for object
